@@ -36,6 +36,3 @@ def text_node_to_html_node(text_node: TextNode) -> LeafNode:
             return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
         case _:
             raise AssertionError(f"Unhandled TextType: {text_node.text_type!r}")
-
-
-
