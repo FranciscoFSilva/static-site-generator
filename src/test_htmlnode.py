@@ -47,5 +47,6 @@ class TestHTMLNode(unittest.TestCase):
             prop_str, ' href="https://www.boot.dev" target="_blank" prop="this"'
         )
 
+
 if __name__ == "__main__":
     unittest.main()
