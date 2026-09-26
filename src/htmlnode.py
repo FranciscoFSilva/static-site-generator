@@ -43,10 +43,10 @@ class LeafNode(HTMLNode):
 @dataclass(init=False)
 class ParentNode(HTMLNode):
     tag: str
-    children: list[HTMLNode]
+    children: list[HTMLNode] | None
 
     def __init__(
-        self, tag: str, children: list[HTMLNode], props: Optional[dict[str, Any]] = None
+        self, tag: str, children: list[HTMLNode] | None, props: Optional[dict[str, Any]] = None
     ) -> None:
         if not tag:
             raise ValueError("Parent Node must have a tag")
@@ -60,6 +60,9 @@ class ParentNode(HTMLNode):
     def to_html(self):
         props = self.props_to_html()
         content = ""
+
+        if not self.children:
+            raise RuntimeError("Parent with no Children")
 
         for child in self.children:
             content += child.to_html()

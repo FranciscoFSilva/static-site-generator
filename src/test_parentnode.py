@@ -46,7 +46,7 @@ class TestParentNode(unittest.TestCase):
 
     def test_parent_with_no_children(self):
         with self.assertRaises(ValueError):
-            ParentNode("div", None)  # ty : ignore[invalid-argument-type]
+            ParentNode("div", None)
 
     def test_parent_with_empty_children(self):
         with self.assertRaises(ValueError):
