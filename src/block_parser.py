@@ -1,6 +1,7 @@
 from enum import StrEnum, auto
 from re import search
 
+
 class BlockType(StrEnum):
     PARAGRAPH = auto()
     HEADING = auto()
@@ -8,6 +9,7 @@ class BlockType(StrEnum):
     QUOTE = auto()
     UNORDERED_LIST = auto()
     ORDERED_LIST = auto()
+
 
 def block_to_block_type(block: str) -> BlockType:
     if search(r"^#{1,6} ", block):
@@ -27,7 +29,7 @@ def block_to_block_type(block: str) -> BlockType:
     if block.startswith("1. "):
         no = 1
         for line in block.split("\n"):
-            if not search(fr"^{no}+. ", line):
+            if not search(rf"^{no}+. ", line):
                 return BlockType.PARAGRAPH
             no += 1
         return BlockType.ORDERED_LIST

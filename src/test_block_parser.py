@@ -1,9 +1,7 @@
 import unittest
 
-from block_parser import (
-    BlockType,
-    block_to_block_type
-)
+from block_parser import BlockType, block_to_block_type
+
 
 class TestBlockParser(unittest.TestCase):
     def test_empty_block(self):

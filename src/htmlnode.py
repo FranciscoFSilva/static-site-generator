@@ -46,7 +46,10 @@ class ParentNode(HTMLNode):
     children: list[HTMLNode] | None
 
     def __init__(
-        self, tag: str, children: list[HTMLNode] | None, props: Optional[dict[str, Any]] = None
+        self,
+        tag: str,
+        children: list[HTMLNode] | None,
+        props: Optional[dict[str, Any]] = None,
     ) -> None:
         if not tag:
             raise ValueError("Parent Node must have a tag")

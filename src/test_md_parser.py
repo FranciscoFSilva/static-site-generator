@@ -7,7 +7,7 @@ from md_parser import (
     split_nodes_image,
     split_nodes_link,
     text_to_textnodes,
-    markdown_to_blocks
+    markdown_to_blocks,
 )
 from textnode import TextNode, TextType
 
@@ -236,14 +236,19 @@ class TestMDParser(unittest.TestCase):
         self.assertEqual(nodes[4], TextNode(" word and a ", TextType.TEXT))
         self.assertEqual(nodes[5], TextNode("code block", TextType.CODE))
         self.assertEqual(nodes[6], TextNode(" and an ", TextType.TEXT))
-        self.assertEqual(nodes[7], TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"))
+        self.assertEqual(
+            nodes[7],
+            TextNode(
+                "obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"
+            ),
+        )
         self.assertEqual(nodes[8], TextNode(" and a ", TextType.TEXT))
         self.assertEqual(nodes[9], TextNode("link", TextType.LINK, "https://boot.dev"))
 
     def test_text_to_textnodes_empty(self):
         input = ""
         nodes = text_to_textnodes(input)
-        self.assertEqual(isinstance(nodes,list), True)
+        self.assertEqual(isinstance(nodes, list), True)
         self.assertEqual(len(nodes), 0)
 
     def test_text_to_textnodes_no_text(self):

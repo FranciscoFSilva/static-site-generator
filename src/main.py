@@ -2,7 +2,6 @@
 
 from htmlnode import HTMLNode
 from textnode import TextNode, TextType
-from md_parser import split_nodes_image
 
 
 def main() -> None:
