@@ -1,10 +1,15 @@
-from textnode import TextNode, TextType
+from textnode import TextType
 from htmlnode import HTMLNode, ParentNode, LeafNode
-from md_parser import markdown_to_blocks, block_to_block_type, text_to_textnodes, BlockType
+from md_parser import (
+    markdown_to_blocks,
+    block_to_block_type,
+    text_to_textnodes,
+    BlockType,
+)
 from re import sub
 
-def markdown_to_html_node(markdown: str) -> ParentNode:
 
+def markdown_to_html_node(markdown: str) -> ParentNode:
     def text_to_children(text: str) -> list[HTMLNode]:
         child_nodes = []
         text_nodes = text_to_textnodes(text)
@@ -19,18 +24,24 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
                 case TextType.CODE:
                     child_nodes.append(LeafNode("code", text_node.text))
                 case TextType.IMAGE:
-                    child_nodes.append(LeafNode("img", "", {"src": text_node.url, "alt": text_node.text}))
+                    child_nodes.append(
+                        LeafNode(
+                            "img", "", {"src": text_node.url, "alt": text_node.text}
+                        )
+                    )
                 case TextType.LINK:
-                    child_nodes.append(LeafNode("a", text_node.text, {"href": text_node.url}))
+                    child_nodes.append(
+                        LeafNode("a", text_node.text, {"href": text_node.url})
+                    )
         return child_nodes
 
     def paragraph_to_html_node(text: str) -> HTMLNode:
-        formatted_text = block.replace("\n"," ")
+        formatted_text = block.replace("\n", " ")
         child_nodes = text_to_children(formatted_text)
         return ParentNode("p", child_nodes)
 
     def heading_to_html_node(text: str) -> HTMLNode:
-        formatted_text = text.replace("\n"," ")
+        formatted_text = text.replace("\n", " ")
         heading, heading_text = formatted_text.split(" ", 1)
         child_nodes = text_to_children(heading_text)
         return ParentNode(f"h{len(heading)}", child_nodes)
@@ -61,7 +72,6 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
         return ParentNode("ul", parent_nodes)
 
     def ordered_list_to_html_node(text: str) -> HTMLNode:
-        formatted_text = sub(r"^\d+. ", "", text).split("\n")
         parent_nodes = []
         for line in text.split("\n"):
             formatted_line = sub(r"^\d+. ", "", line)
@@ -70,7 +80,7 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
         return ParentNode("ol", parent_nodes)
 
     def code_to_html_node(text: str) -> HTMLNode:
-        formatted_text = sub(r"```$", "", sub(r"^```\n","", text))
+        formatted_text = sub(r"```$", "", sub(r"^```\n", "", text))
         child_node = LeafNode("code", formatted_text)
         return ParentNode("pre", [child_node])
 

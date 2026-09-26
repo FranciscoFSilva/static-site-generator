@@ -1,16 +1,18 @@
 # src/main.py
 
-from htmlnode import HTMLNode
-from textnode import TextNode, TextType
+from pathlib import Path
+import shutil
+
+
+def from_static_to_public() -> None:
+    static = Path(".").absolute() / Path("static")
+    public = Path(".").absolute() / Path("public")
+    shutil.rmtree(public)
+    shutil.copytree(static, public)
 
 
 def main() -> None:
-    text_node = TextNode(
-        "This is some anchor text", TextType.LINK, "https://www.boot.dev"
-    )
-    print(text_node)
-    html_node = HTMLNode("<p>", "This", None, None)
-    print(html_node)
+    from_static_to_public()
 
 
 main()

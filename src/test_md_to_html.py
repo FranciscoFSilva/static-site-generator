@@ -1,6 +1,7 @@
 import unittest
 from md_to_html import markdown_to_html_node
 
+
 class TestMDToHTML(unittest.TestCase):
     def test_paragraphs(self):
         md = """
@@ -38,7 +39,9 @@ This is another paragraph with _italic_ text and `code` here
         )
 
     def test_ordered_lists(self):
-        md = "1. This is it.\n2. **bold** and 4. _strong_.\n3. ![link](www.google.com)\n"
+        md = (
+            "1. This is it.\n2. **bold** and 4. _strong_.\n3. ![link](www.google.com)\n"
+        )
         node = markdown_to_html_node(md)
         html = node.to_html()
         self.assertEqual(
@@ -64,7 +67,7 @@ This is another paragraph with _italic_ text and `code` here
             '<div><blockquote><p>This is it. <b>bold</b> and</p><p><i>strong</i>. <img src="www.google.com" alt="link"></img></p></blockquote></div>',
         )
 
-    def test_quoteblock_two_paragraphs(self):
+    def test_quoteblock_two_paragraphs_with_quote_on_the_end(self):
         md = "> This is it.\n> **bold** and\n>\n> _strong_.\n>![link](www.google.com)\n> "
         node = markdown_to_html_node(md)
         html = node.to_html()
