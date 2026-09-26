@@ -57,8 +57,8 @@ def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]:
                     new_node.append(TextNode(split_text[0], TextType.TEXT))
                 new_node.append(TextNode(image_alt, TextType.IMAGE, image_link))
                 text = split_text[1]
-            if text:
-                new_node.append(TextNode(text, TextType.TEXT))
+        if text:
+            new_node.append(TextNode(text, TextType.TEXT))
     return new_node
 
 
@@ -77,14 +77,15 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]:
                     new_node.append(TextNode(split_text[0], TextType.TEXT))
                 new_node.append(TextNode(link_name, TextType.LINK, link_url))
                 text = split_text[1]
-            if text:
-                new_node.append(TextNode(text, TextType.TEXT))
+        if text:
+            new_node.append(TextNode(text, TextType.TEXT))
     return new_node
 
-if __name__ == "__main__":
-    text_node = TextNode(
-        "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)",
-        TextType.TEXT,
-    )
-
-    print("yes")
+def text_to_textnodes(input: str) -> list[TextNode]:
+    src_node = TextNode(input, TextType.TEXT)
+    nodes = split_nodes_delimiter([src_node], '**', TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, '_', TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, '`', TextType.CODE)
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    return nodes

@@ -5,7 +5,8 @@ from md_parser import (
     extract_markdown_links,
     split_nodes_delimiter,
     split_nodes_image,
-    split_nodes_link
+    split_nodes_link,
+    text_to_textnodes
 )
 from textnode import TextNode, TextType
 
@@ -223,3 +224,29 @@ class TestMDParser(unittest.TestCase):
         self.assertEqual(node_list[3].text, "link")
         self.assertEqual(node_list[3].text_type, TextType.LINK)
         self.assertEqual(node_list[1].url, "https://i.imgur.com/zjjcJKZ.png")
+
+    def test_text_to_textnodes(self):
+        input = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        nodes = text_to_textnodes(input)
+        self.assertEqual(nodes[0], TextNode("This is ", TextType.TEXT))
+        self.assertEqual(nodes[1], TextNode("text", TextType.BOLD))
+        self.assertEqual(nodes[2], TextNode(" with an ", TextType.TEXT))
+        self.assertEqual(nodes[3], TextNode("italic", TextType.ITALIC))
+        self.assertEqual(nodes[4], TextNode(" word and a ", TextType.TEXT))
+        self.assertEqual(nodes[5], TextNode("code block", TextType.CODE))
+        self.assertEqual(nodes[6], TextNode(" and an ", TextType.TEXT))
+        self.assertEqual(nodes[7], TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"))
+        self.assertEqual(nodes[8], TextNode(" and a ", TextType.TEXT))
+        self.assertEqual(nodes[9], TextNode("link", TextType.LINK, "https://boot.dev"))
+
+    def test_text_to_textnodes_empty(self):
+        input = ""
+        nodes = text_to_textnodes(input)
+        self.assertEqual(isinstance(nodes,list), True)
+        self.assertEqual(len(nodes), 0)
+
+    def test_text_to_textnodes_no_text(self):
+        input = "**bold****bold**"
+        nodes = text_to_textnodes(input)
+        self.assertEqual(nodes[0], TextNode("bold", TextType.BOLD))
+        self.assertEqual(nodes[1], TextNode("bold", TextType.BOLD))
