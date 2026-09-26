@@ -1,9 +1,20 @@
-from re import findall
+from re import findall, search
 
 from textnode import TextNode, TextType
 
+from enum import StrEnum, auto
+
 type ImageInfo = tuple[str, str]
 type LinkInfo = tuple[str, str]
+
+
+class BlockType(StrEnum):
+    PARAGRAPH = auto()
+    HEADING = auto()
+    CODE = auto()
+    QUOTE = auto()
+    UNORDERED_LIST = auto()
+    ORDERED_LIST = auto()
 
 
 def extract_markdown_images(text) -> list[ImageInfo]:
@@ -94,3 +105,28 @@ def text_to_textnodes(input: str) -> list[TextNode]:
 
 def markdown_to_blocks(markdown: str) -> list[str]:
     return list(filter(None, [block.strip() for block in markdown.split("\n\n")]))
+
+
+def block_to_block_type(block: str) -> BlockType:
+    if search(r"^#{1,6} ", block):
+        return BlockType.HEADING
+    if block.startswith("```\n") and block.endswith("\n```"):
+        return BlockType.CODE
+    if block.startswith(">"):
+        for line in block.split("\n"):
+            if not search(r"^> ?", line):
+                return BlockType.PARAGRAPH
+        return BlockType.QUOTE
+    if block.startswith("- "):
+        for line in block.split("\n"):
+            if not line.startswith("- "):
+                return BlockType.PARAGRAPH
+        return BlockType.UNORDERED_LIST
+    if block.startswith("1. "):
+        no = 1
+        for line in block.split("\n"):
+            if not search(rf"^{no}+. ", line):
+                return BlockType.PARAGRAPH
+            no += 1
+        return BlockType.ORDERED_LIST
+    return BlockType.PARAGRAPH
