@@ -1,7 +1,8 @@
-from enum import auto, StrEnum
-from htmlnode import LeafNode
 from dataclasses import dataclass
+from enum import StrEnum, auto
 from typing import Optional
+
+from htmlnode import LeafNode
 
 
 class TextType(StrEnum):
