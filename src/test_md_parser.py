@@ -9,6 +9,7 @@ from md_parser import (
     text_to_textnodes,
     markdown_to_blocks,
     block_to_block_type,
+    extract_title,
     BlockType,
 )
 from textnode import TextNode, TextType
@@ -343,3 +344,13 @@ This is the same paragraph on a new line
         block = "1. this\n2. is the shit\n4. right?"
         block_type = block_to_block_type(block)
         self.assertEqual(block_type, BlockType.PARAGRAPH)
+
+    def test_extract_title(self):
+        markdown = "# Hello\n\nThis is an amazing adventure!\n\n- list\n- this\n- shit\n\n## I know what I am doing\n # this"
+        title = extract_title(markdown)
+        self.assertEqual(title, "Hello")
+
+    def test_extract_title_error(self):
+        markdown = "Hello\n\nThis is an amazing adventure!\n\n- list\n- this\n- shit\n\n## I know what I am doing\n# this"
+        with self.assertRaises(ValueError):
+            extract_title(markdown)
