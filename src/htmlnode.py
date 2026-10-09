@@ -1,13 +1,13 @@
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any
 
 
 @dataclass
 class HTMLNode:
-    tag: Optional[str] = None
-    value: Optional[str] = None
-    children: Optional[list["HTMLNode"]] = None
-    props: Optional[dict[str, Any]] = None
+    tag: str | None = None
+    value: str | None = None
+    children: list[HTMLNode] | None = None
+    props: dict[str, Any] | None = None
 
     def to_html(self):
         raise NotImplementedError()
@@ -25,7 +25,7 @@ class LeafNode(HTMLNode):
     children: None = None
 
     def __init__(
-        self, tag: Optional[str], value: str, props: Optional[dict[str, Any]] = None
+        self, tag: str | None, value: str, props: dict[str, Any] | None = None
     ) -> None:
         if value is None:
             raise ValueError("All leaf nodes must have a value")
@@ -49,7 +49,7 @@ class ParentNode(HTMLNode):
         self,
         tag: str,
         children: list[HTMLNode] | None,
-        props: Optional[dict[str, Any]] = None,
+        props: dict[str, Any] | None = None,
     ) -> None:
         if not tag:
             raise ValueError("Parent Node must have a tag")

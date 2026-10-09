@@ -1,8 +1,7 @@
+from enum import StrEnum, auto
 from re import findall, search
 
 from textnode import TextNode, TextType
-
-from enum import StrEnum, auto
 
 type ImageInfo = tuple[str, str]
 type LinkInfo = tuple[str, str]
@@ -106,14 +105,16 @@ def text_to_textnodes(input: str) -> list[TextNode]:
 def markdown_to_blocks(markdown: str) -> list[str]:
     return list(filter(None, [block.strip() for block in markdown.split("\n\n")]))
 
+
 def extract_title(markdown: str) -> str:
-    lines = markdown.split('\n')
+    lines = markdown.split("\n")
     if not lines:
-       raise ValueError("invalid markdown.")
+        raise ValueError("invalid markdown.")
     title = lines[0]
     if not title.startswith("# "):
         raise ValueError("Markdown does not begin with a title.")
     return title[1::].strip()
+
 
 def block_to_block_type(block: str) -> BlockType:
     if search(r"^#{1,6} ", block):

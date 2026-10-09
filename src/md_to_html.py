@@ -1,12 +1,13 @@
-from textnode import TextType
-from htmlnode import HTMLNode, ParentNode, LeafNode
-from md_parser import (
-    markdown_to_blocks,
-    block_to_block_type,
-    text_to_textnodes,
-    BlockType,
-)
 from re import sub
+
+from htmlnode import HTMLNode, LeafNode, ParentNode
+from md_parser import (
+    BlockType,
+    block_to_block_type,
+    markdown_to_blocks,
+    text_to_textnodes,
+)
+from textnode import TextType
 
 
 def markdown_to_html_node(markdown: str) -> ParentNode:

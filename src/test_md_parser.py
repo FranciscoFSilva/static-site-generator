@@ -1,16 +1,16 @@
 import unittest
 
 from md_parser import (
+    BlockType,
+    block_to_block_type,
     extract_markdown_images,
     extract_markdown_links,
+    extract_title,
+    markdown_to_blocks,
     split_nodes_delimiter,
     split_nodes_image,
     split_nodes_link,
     text_to_textnodes,
-    markdown_to_blocks,
-    block_to_block_type,
-    extract_title,
-    BlockType,
 )
 from textnode import TextNode, TextType
 

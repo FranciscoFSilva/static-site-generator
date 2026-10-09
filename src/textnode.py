@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from enum import StrEnum, auto
-from typing import Optional
 
 from htmlnode import LeafNode
 
@@ -18,7 +17,7 @@ class TextType(StrEnum):
 class TextNode:
     text: str
     text_type: TextType
-    url: Optional[str] = None
+    url: str | None = None
 
 
 def text_node_to_html_node(text_node: TextNode) -> LeafNode:
