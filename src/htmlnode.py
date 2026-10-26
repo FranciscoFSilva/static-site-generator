@@ -6,7 +6,7 @@ from typing import Any
 class HTMLNode:
     tag: str | None = None
     value: str | None = None
-    children: list[HTMLNode] | None = None
+    children: list["HTMLNode"] | None = None
     props: dict[str, Any] | None = None
 
     def to_html(self):
